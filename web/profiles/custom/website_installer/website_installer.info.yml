@@ -1,0 +1,29 @@
+name: Website
+type: profile
+core_version_requirement: '^11.4 || ^12'
+description: 'Installs a Website from the Website Starter site template. Not to be used in production.'
+
+# Skip the profile selection step of the Drupal installer.
+distribution:
+  name: Website
+  install:
+    theme: claro
+    finish_url: '/'
+
+# Forms presented before the database settings.
+forms:
+  - '\Drupal\RecipeKit\Installer\Form\SiteNameForm'
+
+recipes:
+  # Always applied.
+  required:
+    - drupal/website_starter
+  # Applied when no additional recipe is chosen.
+  default: []
+  # Optional combinations offered to the user.
+  optional: {}
+
+hide_messages:
+  - 'Congratulations, you installed @drupal!'
+
+project: website_installer

@@ -1,6 +1,6 @@
 {
     "name": "drupal/website",
-    "description": "Website: a ready-to-use Drupal project built with Display Builder and the UI Suite UIkit design system.",
+    "description": "Website: a ready-to-use Drupal project built with Display Builder and the UI Suite UIkit design system, for DDEV.",
     "type": "project",
     "license": "GPL-2.0-or-later",
     "homepage": "https://www.drupal.org/project/website",
@@ -20,7 +20,11 @@
         "drupal/core-project-message": "^11.4",
         "drupal/core-recipe-unpack": "^11.4",
         "drupal/core-recommended": "^11.4",
-        "drupal/website_starter": "^1.0@dev",
+        "drupal/core-vendor-hardening": "^11.4",
+        "drupal/recipe_installer_kit": "^1.0.4",
+        "drupal/website_starter": "^1.0@dev"
+    },
+    "require-dev": {
         "drush/drush": "^13.7"
     },
     "conflict": {
@@ -34,6 +38,7 @@
             "drupal/core-composer-scaffold": true,
             "drupal/core-project-message": true,
             "drupal/core-recipe-unpack": true,
+            "drupal/core-vendor-hardening": true,
             "php-http/discovery": true
         },
         "bin-dir": "vendor/bin",
@@ -44,36 +49,66 @@
         "drupal-scaffold": {
             "locations": {
                 "web-root": "web/"
+            },
+            "file-mapping": {
+                "[web-root]/example.gitignore": false
             }
         },
         "installer-paths": {
-            "web/core": ["type:drupal-core"],
-            "web/libraries/{$name}": ["type:drupal-library"],
-            "web/modules/contrib/{$name}": ["type:drupal-module"],
-            "web/profiles/contrib/{$name}": ["type:drupal-profile"],
-            "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/Commands/contrib/{$name}": ["type:drupal-drush"],
-            "web/modules/custom/{$name}": ["type:drupal-custom-module"],
-            "web/profiles/custom/{$name}": ["type:drupal-custom-profile"],
-            "web/themes/custom/{$name}": ["type:drupal-custom-theme"],
-            "recipes/{$name}": ["type:drupal-recipe"]
+            "web/core": [
+                "type:drupal-core"
+            ],
+            "web/libraries/{$name}": [
+                "type:drupal-library"
+            ],
+            "web/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "web/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "web/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "drush/Commands/contrib/{$name}": [
+                "type:drupal-drush"
+            ],
+            "web/modules/custom/{$name}": [
+                "type:drupal-custom-module"
+            ],
+            "web/profiles/custom/{$name}": [
+                "type:drupal-custom-profile"
+            ],
+            "web/themes/custom/{$name}": [
+                "type:drupal-custom-theme"
+            ],
+            "recipes/{$name}": [
+                "type:drupal-recipe"
+            ]
         },
         "drupal-recipe-unpack": {
-            "ignore": ["drupal/website_starter"]
+            "ignore": [
+                "drupal/website_starter"
+            ]
+        },
+        "drupal-core-vendor-hardening": {
+            "composer/composer": false
         },
         "drupal-core-project-message": {
-            "include-keys": ["homepage", "support"],
+            "include-keys": [
+                "homepage",
+                "support"
+            ],
             "post-create-project-cmd-message": [
                 "<bg=blue;fg=white>                                                    </>",
                 "<bg=blue;fg=white>  Congratulations, your Website project is ready!   </>",
                 "<bg=blue;fg=white>                                                    </>",
                 "",
                 "<bg=yellow;fg=black>Next steps</>:",
-                "  * Install the site: vendor/bin/drush site:install recipes/website_starter",
-                "  * With DDEV: ddev config --project-type=drupal --docroot=web && ddev start",
-                "    then: ddev drush site:install recipes/website_starter -y",
-                "  * Build pages with Display Builder: /admin/structure/page-layout",
-                "  * Browse the UIkit components: /admin/appearance/ui/components/ui_suite_uikit"
+                "  * Start DDEV: ddev start",
+                "  * Install in the browser: ddev launch (the installer offers the Website Starter site template)",
+                "  * Or from the command line: ddev drush site:install website_installer -y",
+                "  * Build pages with Display Builder: /admin/structure/page-layout"
             ]
         }
     }

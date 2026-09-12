@@ -21,14 +21,14 @@ With DDEV:
 ```shell
 ddev config --project-type=drupal --docroot=web --project-name=my-site
 ddev start
-ddev drush site:install recipes/website_starter -y
+ddev drush site:install website_installer -y
 ddev launch
 ```
 
 Without DDEV, point a web server to `web/` and run:
 
 ```shell
-vendor/bin/drush site:install recipes/website_starter --db-url=mysql://user:pass@localhost/db
+vendor/bin/drush site:install website_installer --db-url=mysql://user:pass@localhost/db
 ```
 
 ## Project layout

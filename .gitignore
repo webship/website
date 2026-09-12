@@ -27,6 +27,7 @@
 /web/sites/simpletest/
 /private/
 
-# Local environment.
-/.ddev/
+# DDEV: keep config.yaml, ignore what DDEV generates.
+/.ddev/*
+!/.ddev/config.yaml
 .DS_Store

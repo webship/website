@@ -1,0 +1,13 @@
+# DDEV configuration of a Website project.
+# The project name defaults to the directory name. See https://docs.ddev.com
+type: drupal11
+docroot: web
+php_version: "8.3"
+webserver_type: nginx-fpm
+database:
+  type: mariadb
+  version: "10.11"
+composer_version: "2"
+nodejs_version: "20"
+web_environment:
+  - DRUSH_OPTIONS_URI=$DDEV_PRIMARY_URL
