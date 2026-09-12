@@ -39,7 +39,10 @@
             "drupal/core-project-message": true,
             "drupal/core-recipe-unpack": true,
             "drupal/core-vendor-hardening": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "php-tuf/composer-integration": true,
+            "symfony/runtime": true,
+            "tbachert/spi": true
         },
         "bin-dir": "vendor/bin",
         "sort-packages": true,
