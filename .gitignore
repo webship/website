@@ -1,0 +1,32 @@
+# Composer dependencies.
+/vendor/
+/web/core/
+/web/modules/contrib/
+/web/themes/contrib/
+/web/profiles/contrib/
+/web/libraries/
+/recipes/
+/drush/Commands/contrib/
+
+# Scaffolded files.
+/web/.htaccess
+/web/*.php
+/web/*.txt
+/web/.ht.router.php
+/web/example.gitignore
+/web/INSTALL.txt
+/web/README.md
+/web/robots.txt
+/web/update.php
+/web/web.config
+
+# Site specific.
+/web/sites/*/settings*.php
+/web/sites/*/services*.yml
+/web/sites/*/files/
+/web/sites/simpletest/
+/private/
+
+# Local environment.
+/.ddev/
+.DS_Store
