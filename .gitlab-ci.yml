@@ -1,0 +1,62 @@
+################
+# GitLab CI for the Website project template (a Composer "project" package).
+#
+# The drupal.org module and recipe jobs do not apply to a project template, so
+# only the templates' variables (images, database) and workflow (merge request
+# pipelines) are included. The jobs validate composer.json, then build the
+# project from this branch and install Drupal with its installer profile.
+# Documentation: https://project.pages.drupalcode.org/gitlab_templates/
+################
+include:
+  - project: $_GITLAB_TEMPLATES_REPO
+    ref: $_GITLAB_TEMPLATES_REF
+    file:
+      - '/includes/include.drupalci.variables.yml'
+      - '/includes/include.drupalci.workflows.yml'
+
+variables:
+  _TARGET_PHP: '8.4'
+  DRUPAL_CORE: '11.4.x-dev'
+  COMPOSER_NO_INTERACTION: '1'
+
+default:
+  image: $_CONFIG_DOCKERHUB_ROOT/php-$_TARGET_PHP-$_TARGET_PHP_IMAGE_VARIANT:$_TARGET_PHP_IMAGE_TAG
+  interruptible: true
+
+stages:
+  - validate
+  - test
+
+composer validate:
+  stage: validate
+  script:
+    - composer --version
+    - composer validate --strict
+
+# Build the project from this branch, on Drupal 11.4, and install Drupal.
+project:
+  stage: test
+  needs: []
+  services:
+    - name: $_CONFIG_DOCKERHUB_ROOT/$_TARGET_DB_TYPE-$_TARGET_DB_VERSION:$_TARGET_DB_IMAGE_TAG
+      alias: database
+  variables:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: mysql
+    MYSQL_USER: drupaltestbot
+    MYSQL_PASSWORD: drupaltestbotpw
+  script:
+    - composer require --no-update "drupal/core-recommended:$DRUPAL_CORE"
+    # @todo Remove when webblog 12.0.x has the Display Builder displays and
+    #   requires ~12.0 of webassets and webdev:
+    #   https://git.drupalcode.org/project/webblog/-/merge_requests/4
+    - composer config repositories.drupal '{"type":"composer","url":"https://packages.drupal.org/8","exclude":["drupal/webblog"]}'
+    - composer config repositories.webblog vcs https://git.drupalcode.org/issue/webblog-3591554.git
+    - composer require --no-update "drupal/webblog:dev-3591554-display-builder as 12.0.x-dev"
+    - composer install
+    # Run the Drush PHP script directly: vendor/bin/drush is a shell proxy.
+    - export DRUSH="php -d memory_limit=-1 vendor/drush/drush/drush.php"
+    - $DRUSH site:install website_installer -y
+      --db-url=mysql://$MYSQL_USER:$MYSQL_PASSWORD@database/$MYSQL_DATABASE
+      --account-name=admin --account-pass=admin
+    - $DRUSH status --fields=drupal-version,db-status,install-profile
