@@ -47,16 +47,24 @@ project:
     MYSQL_PASSWORD: drupaltestbotpw
   script:
     - composer require --no-update "drupal/core-recommended:$DRUPAL_CORE"
-    # @todo Remove when webblog 12.0.x has the Display Builder displays and
-    #   requires ~12.0 of webassets and webdev:
-    #   https://git.drupalcode.org/project/webblog/-/merge_requests/4
-    - composer config repositories.drupal '{"type":"composer","url":"https://packages.drupal.org/8","exclude":["drupal/webblog"]}'
-    - composer config repositories.webblog vcs https://git.drupalcode.org/issue/webblog-3591554.git
-    - composer require --no-update "drupal/webblog:dev-3591554-display-builder as 12.0.x-dev"
+    - composer config repositories.drupal '{"type":"composer","url":"https://packages.drupal.org/8","exclude":["drupal/webreleases","drupal/webship"]}'
+    # @todo Remove when packages.drupal.org lists drupal/webship 12.0.x-dev. A
+    #   vcs repository names every branch webship/webship, after the name in
+    #   the composer.json of the default branch, 11.0.x.
+    - composer config repositories.webship '{"type":"package","package":{"name":"drupal/webship","version":"12.0.x-dev","type":"drupal-profile","source":{"type":"git","url":"https://git.drupalcode.org/project/webship.git","reference":"12.0.x"},"require":{"composer/composer":"^2.8","drupal/core":"^11.4 || ^12"}}}'
+    # @todo Remove when webreleases 12.0.x has the Display Builder displays:
+    #   https://git.drupalcode.org/project/webreleases/-/merge_requests/5
+    - composer config repositories.webreleases vcs https://git.drupalcode.org/issue/webreleases-3591672.git
+    - composer require --no-update "drupal/webreleases:dev-3591672-display-builder as 12.0.x-dev"
     - composer install
     # Run the Drush PHP script directly: vendor/bin/drush is a shell proxy.
-    - export DRUSH="php -d memory_limit=-1 vendor/drush/drush/drush.php"
-    - $DRUSH site:install website_installer -y
+    # @todo Remove zend.assertions=-1 when the Webship installer accepts a site
+    #   template without a screenshot.webp, like webship_portal 1.0.x.
+    - export DRUSH="php -d memory_limit=-1 -d zend.assertions=-1 vendor/drush/drush/drush.php"
+    # The Webship installer, with a site template chosen without the browser.
+    - $DRUSH site:install webship -y
+      installer_site_template_form.add_ons=webship_portal
       --db-url=mysql://$MYSQL_USER:$MYSQL_PASSWORD@database/$MYSQL_DATABASE
       --account-name=admin --account-pass=admin
-    - $DRUSH status --fields=drupal-version,db-status,install-profile
+    - $DRUSH status --fields=drupal-version,db-status
+    - $DRUSH pm:list --status=enabled --format=list | grep -x webtheme

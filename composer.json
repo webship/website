@@ -1,6 +1,6 @@
 {
     "name": "drupal/website",
-    "description": "Website: a ready-to-use Drupal project built with Display Builder and the UI Suite UIkit design system, for DDEV.",
+    "description": "Website: a ready-to-use Drupal project, installed with the Webship installer and one of its site templates: Website Starter, Webship Starter or Webship Portal. Built with the UI Suite UIkit theme (UIkit and HTMX) on top of Drupal and Display Builder.",
     "type": "project",
     "license": "GPL-2.0-or-later",
     "homepage": "https://www.drupal.org/project/website",
@@ -21,7 +21,9 @@
         "drupal/core-recipe-unpack": "^11.4",
         "drupal/core-recommended": "^11.4",
         "drupal/core-vendor-hardening": "^11.4",
-        "drupal/recipe_installer_kit": "^1.0.4",
+        "drupal/webship": "~12.0@dev",
+        "drupal/webship_portal": "^1.0@dev",
+        "drupal/webship_starter": "^1.0@dev",
         "drupal/website_starter": "^1.0@dev"
     },
     "require-dev": {
@@ -91,6 +93,8 @@
         },
         "drupal-recipe-unpack": {
             "ignore": [
+                "drupal/webship_portal",
+                "drupal/webship_starter",
                 "drupal/website_starter"
             ]
         },
@@ -109,8 +113,8 @@
                 "",
                 "<bg=yellow;fg=black>Next steps</>:",
                 "  * Start DDEV: ddev start",
-                "  * Install in the browser: ddev launch (the installer offers the Website Starter site template)",
-                "  * Or from the command line: ddev drush site:install website_installer -y",
+                "  * Install in the browser: ddev launch (the Webship installer lists the site templates)",
+                "  * Or from the command line: ddev drush site:install webship -y",
                 "  * Build pages with Display Builder: /admin/structure/page-layout"
             ]
         }

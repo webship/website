@@ -1,11 +1,19 @@
 # Website
 
-A ready-to-use Drupal project template, in the spirit of `drupal/cms`, built with
-[Display Builder](https://www.drupal.org/project/display_builder) and the
-[UI Suite UIkit](https://www.drupal.org/project/ui_suite_uikit) design system.
+A ready-to-use Drupal project template, in the spirit of `drupal/cms`.
 
-The site itself is installed by the [Website Starter](https://www.drupal.org/project/website_starter) recipe:
-a Display Builder page layout and content displays made of UIkit components, menus and default content.
+The site templates use the [UI Suite UIkit](https://www.drupal.org/project/ui_suite_uikit) theme,
+with [UIkit](https://getuikit.com) and [HTMX](https://htmx.org), on top of Drupal and
+[Display Builder](https://www.drupal.org/project/display_builder). No Layout Builder and no Drupal Canvas.
+
+The project requires only the [Webship](https://www.drupal.org/project/webship) installer and three site
+templates. The installer works like the Drupal CMS installer and lists them:
+
+- [Website Starter](https://www.drupal.org/project/website_starter): a Display Builder page layout and content
+  displays made of UIkit components, menus and default content.
+- [Webship Starter](https://www.drupal.org/project/webship_starter): documentation, products and releases, a
+  newsletter and social sharing.
+- [Webship Portal](https://www.drupal.org/project/webship_portal): the Webship.co portal, with Webtheme.
 
 ## Create a project
 
@@ -21,14 +29,19 @@ With DDEV:
 ```shell
 ddev config --project-type=drupal --docroot=web --project-name=my-site
 ddev start
-ddev drush site:install website_installer -y
 ddev launch
+```
+
+Or from the command line, with the Webship Starter site template:
+
+```shell
+ddev drush site:install webship -y
 ```
 
 Without DDEV, point a web server to `web/` and run:
 
 ```shell
-vendor/bin/drush site:install website_installer --db-url=mysql://user:pass@localhost/db
+vendor/bin/drush site:install webship --db-url=mysql://user:pass@localhost/db
 ```
 
 ## Project layout
@@ -36,7 +49,10 @@ vendor/bin/drush site:install website_installer --db-url=mysql://user:pass@local
 | Path | Content |
 |---|---|
 | `web/` | Drupal root (core, contrib modules and themes) |
-| `recipes/website_starter` | The Website Starter recipe, applied on installation |
+| `web/profiles/contrib/webship` | The Webship installer, uninstalled after the installation |
+| `recipes/website_starter` | The Website Starter site template |
+| `recipes/webship_starter` | The Webship Starter site template |
+| `recipes/webship_portal` | The Webship Portal site template |
 | `vendor/` | Composer dependencies, Drush |
 
 ## What is inside
