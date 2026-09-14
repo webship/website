@@ -31,7 +31,8 @@ composer validate:
   stage: validate
   script:
     - composer --version
-    - composer validate --strict
+    # The Webship packages use exact x-dev versions on purpose, so no --strict.
+    - composer validate
 
 # Build the project from this branch, on Drupal 11.4, and install Drupal.
 project:
@@ -45,24 +46,36 @@ project:
     MYSQL_DATABASE: mysql
     MYSQL_USER: drupaltestbot
     MYSQL_PASSWORD: drupaltestbotpw
+  # One install per site template.
+  parallel:
+    matrix:
+      - SITE_TEMPLATE: website_starter
+        ENABLED_EXTENSION: ui_suite_uikit
+      - SITE_TEMPLATE: webship_starter
+        ENABLED_EXTENSION: ui_suite_uikit
+      - SITE_TEMPLATE: webship_portal
+        ENABLED_EXTENSION: webtheme
   script:
     - composer require --no-update "drupal/core-recommended:$DRUPAL_CORE"
-    - composer config repositories.drupal '{"type":"composer","url":"https://packages.drupal.org/8","exclude":["drupal/webreleases","drupal/webship"]}'
-    # @todo Remove when packages.drupal.org lists drupal/webship 12.0.x-dev. A
-    #   vcs repository names every branch webship/webship, after the name in
-    #   the composer.json of the default branch, 11.0.x.
-    - composer config repositories.webship '{"type":"package","package":{"name":"drupal/webship","version":"12.0.x-dev","type":"drupal-profile","source":{"type":"git","url":"https://git.drupalcode.org/project/webship.git","reference":"12.0.x"},"require":{"composer/composer":"^2.8","drupal/core":"^11.4 || ^12"}}}'
-    # @todo Remove when webreleases 12.0.x has the Display Builder displays:
-    #   https://git.drupalcode.org/project/webreleases/-/merge_requests/5
-    - composer config repositories.webreleases vcs https://git.drupalcode.org/issue/webreleases-3591672.git
-    - composer require --no-update "drupal/webreleases:dev-3591672-display-builder as 12.0.x-dev"
+    # @todo Remove when packages.drupal.org publishes drupal/webship: https://git.drupalcode.org/project/infrastructure/-/work_items/3606945
+    - composer config repositories.webship-temporary '{"type":"package","package":{"name":"drupal/webship","version":"12.0.x-dev","type":"drupal-profile","source":{"type":"git","url":"https://git.drupalcode.org/project/webship.git","reference":"12.0.x"},"require":{"composer/composer":"^2.8","drupal/core":"^11.4 || ^12"}}}'
     - composer install
+    # Where each Webship package came from.
+    - |
+      php -r '
+        $lock = json_decode(file_get_contents("composer.lock"), TRUE);
+        $packages = array_column(array_merge($lock["packages"], $lock["packages-dev"]), NULL, "name");
+        foreach (["webship", "website_starter", "webship_starter", "webship_portal", "webdash"] as $name) {
+          $package = $packages["drupal/$name"] ?? [];
+          echo "drupal/$name: ", $package["dist"]["url"] ?? $package["source"]["url"] ?? "missing", "\n";
+        }
+      '
     # Run the Drush PHP script directly: vendor/bin/drush is a shell proxy.
     - export DRUSH="php -d memory_limit=-1 vendor/drush/drush/drush.php"
     # The Webship installer, with a site template chosen without the browser.
     - $DRUSH site:install webship -y
-      installer_site_template_form.add_ons=webship_portal
+      installer_site_template_form.add_ons=$SITE_TEMPLATE
       --db-url=mysql://$MYSQL_USER:$MYSQL_PASSWORD@database/$MYSQL_DATABASE
       --account-name=admin --account-pass=admin
     - $DRUSH status --fields=drupal-version,db-status
-    - $DRUSH pm:list --status=enabled --format=list | grep -x webtheme
+    - $DRUSH pm:list --status=enabled --format=list | grep -x "$ENABLED_EXTENSION"
