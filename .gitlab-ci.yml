@@ -58,9 +58,7 @@ project:
     - composer require --no-update "drupal/webreleases:dev-3591672-display-builder as 12.0.x-dev"
     - composer install
     # Run the Drush PHP script directly: vendor/bin/drush is a shell proxy.
-    # @todo Remove zend.assertions=-1 when the Webship installer accepts a site
-    #   template without a screenshot.webp, like webship_portal 1.0.x.
-    - export DRUSH="php -d memory_limit=-1 -d zend.assertions=-1 vendor/drush/drush/drush.php"
+    - export DRUSH="php -d memory_limit=-1 vendor/drush/drush/drush.php"
     # The Webship installer, with a site template chosen without the browser.
     - $DRUSH site:install webship -y
       installer_site_template_form.add_ons=webship_portal
