@@ -26,7 +26,7 @@
         "drupal/webship_portal": "1.0.x-dev",
         "drupal/webship_starter": "1.0.x-dev",
         "drupal/website_starter": "1.0.x-dev",
-        "webship/patches": "~11.0.0"
+        "webship/patches": "12.0.x-dev"
     },
     "require-dev": {
         "drush/drush": "^13.7"
