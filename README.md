@@ -18,7 +18,7 @@ templates. The installer works like the Drupal CMS installer and lists them:
 ## Create a project
 
 ```shell
-composer create-project drupal/website:^1.0@alpha my_site --stability=alpha
+composer create-project drupal/website:1.0.x-dev my_site --stability=dev
 cd my_site
 ```
 
