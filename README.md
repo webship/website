@@ -1,13 +1,13 @@
 # Website
 
-A ready-to-use Drupal project template, in the spirit of `drupal/cms`.
+A ready-to-use Drupal project template.
 
 The site templates use the [UI Suite UIkit](https://www.drupal.org/project/ui_suite_uikit) theme,
 with [UIkit](https://getuikit.com) and [HTMX](https://htmx.org), on top of Drupal and
 [Display Builder](https://www.drupal.org/project/display_builder). No Layout Builder and no Drupal Canvas.
 
 The project requires only the [Webship](https://www.drupal.org/project/webship) installer and three site
-templates. The installer works like the Drupal CMS installer and lists them:
+templates. The installer lists them:
 
 - [Website Starter](https://www.drupal.org/project/website_starter): a Display Builder page layout and content
   displays made of UIkit components, menus and default content.
@@ -20,8 +20,9 @@ templates. The installer works like the Drupal CMS installer and lists them:
 Composer runs inside DDEV, so nothing is needed on your machine but DDEV itself.
 
 ```shell
-mkdir my-site && cd my-site
-ddev config --project-type=drupal --docroot=web --project-name=my-site
+mkdir -p ~/workspace/projects/my-website
+cd ~/workspace/projects/my-website
+ddev config --project-type=drupal11 --docroot=web --php-version=8.4
 ddev start
 ddev composer create-project drupal/website:^1.0@alpha
 ```
@@ -37,14 +38,10 @@ ddev launch
 Or install from the command line, with the Webship Starter site template:
 
 ```shell
-ddev drush site:install webship -y installer_site_template_form.add_ons=webship_starter
+ddev drush si -y webship --account-name=webmaster --site-name="My Website" installer_site_template_form.add_ons=webship_starter
 ```
 
-Without DDEV, point a web server to `web/` and run:
-
-```shell
-vendor/bin/drush site:install webship --db-url=mysql://user:pass@localhost/db
-```
+Use `website_starter`, `webship_starter` or `webship_portal` as the site template.
 
 ## Project layout
 
