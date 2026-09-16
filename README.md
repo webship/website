@@ -17,25 +17,27 @@ templates. The installer works like the Drupal CMS installer and lists them:
 
 ## Create a project
 
+Composer runs inside DDEV, so nothing is needed on your machine but DDEV itself.
+
 ```shell
-composer create-project drupal/website:1.0.x-dev my_site --stability=dev
-cd my_site
+mkdir my-site && cd my-site
+ddev config --project-type=drupal --docroot=web --project-name=my-site
+ddev start
+ddev composer create-project drupal/website:^1.0@alpha
 ```
 
 ## Install the site
 
-With DDEV:
+Open the site and follow the installer, where you pick the site template:
 
 ```shell
-ddev config --project-type=drupal --docroot=web --project-name=my-site
-ddev start
 ddev launch
 ```
 
-Or from the command line, with the Webship Starter site template:
+Or install from the command line, with the Webship Starter site template:
 
 ```shell
-ddev drush site:install webship -y
+ddev drush site:install webship -y installer_site_template_form.add_ons=webship_starter
 ```
 
 Without DDEV, point a web server to `web/` and run:
