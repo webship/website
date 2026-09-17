@@ -21,12 +21,12 @@
         "drupal/core-recipe-unpack": "^11.4",
         "drupal/core-recommended": "^11.4",
         "drupal/core-vendor-hardening": "^11.4",
-        "drupal/webpatches": "12.0.x-dev",
-        "drupal/webship_portal": "1.0.x-dev",
-        "drupal/webship_starter": "1.0.x-dev",
-        "drupal/website_starter": "1.0.x-dev",
-        "webship/patches": "12.0.x-dev",
-        "webship/webship": "12.0.x-dev"
+        "drupal/webpatches": "~12.0",
+        "drupal/webship_portal": "^1.0",
+        "drupal/webship_starter": "^1.0",
+        "drupal/website_starter": "^1.0",
+        "webship/patches": "~12.0",
+        "webship/webship": "~12.0"
     },
     "require-dev": {
         "drush/drush": "^13.7"
