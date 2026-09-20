@@ -55,6 +55,10 @@ project:
         ENABLED_EXTENSION: ui_suite_uikit
       - SITE_TEMPLATE: webship_portal
         ENABLED_EXTENSION: webtheme
+      - SITE_TEMPLATE: webapi_starter
+        ENABLED_EXTENSION: webapi
+      - SITE_TEMPLATE: webships_starter
+        ENABLED_EXTENSION: webapi
   script:
     - composer require --no-update "drupal/core-recommended:$DRUPAL_CORE"
     - composer install
@@ -63,16 +67,15 @@ project:
       php -r '
         $lock = json_decode(file_get_contents("composer.lock"), TRUE);
         $packages = array_column(array_merge($lock["packages"], $lock["packages-dev"]), NULL, "name");
-        foreach (["webship", "website_starter", "webship_starter", "webship_portal", "webdash"] as $name) {
+        foreach (["webship", "website_starter", "webship_starter", "webship_portal", "webapi_starter", "webships_starter", "webdash"] as $name) {
           $package = $packages["drupal/$name"] ?? [];
           echo "drupal/$name: ", $package["dist"]["url"] ?? $package["source"]["url"] ?? "missing", "\n";
         }
       '
     # Run the Drush PHP script directly: vendor/bin/drush is a shell proxy.
     - export DRUSH="php -d memory_limit=-1 vendor/drush/drush/drush.php"
-    # The Webship installer, with a site template chosen without the browser.
-    - $DRUSH site:install webship -y
-      installer_site_template_form.add_ons=$SITE_TEMPLATE
+    # Install the site template from its recipe directory, relative to the Drupal root.
+    - $DRUSH site:install ../recipes/$SITE_TEMPLATE -y
       --db-url=mysql://$MYSQL_USER:$MYSQL_PASSWORD@database/$MYSQL_DATABASE
       --account-name=admin --account-pass=admin
     - $DRUSH status --fields=drupal-version,db-status

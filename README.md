@@ -6,7 +6,7 @@ The site templates use the [UI Suite UIkit](https://www.drupal.org/project/ui_su
 with [UIkit](https://getuikit.com) and [HTMX](https://htmx.org), on top of Drupal and
 [Display Builder](https://www.drupal.org/project/display_builder). No Layout Builder and no Drupal Canvas.
 
-The project requires only the [Webship](https://www.drupal.org/project/webship) installer and three site
+The project requires only the [Webship](https://www.drupal.org/project/webship) installer and five site
 templates. The installer lists them:
 
 - [Website Starter](https://www.drupal.org/project/website_starter): a Display Builder page layout and content
@@ -14,6 +14,10 @@ templates. The installer lists them:
 - [Webship Starter](https://www.drupal.org/project/webship_starter): documentation, products and releases, a
   newsletter and social sharing.
 - [Webship Portal](https://www.drupal.org/project/webship_portal): the Webship.co portal, with Webtheme.
+- [Drupal Website API Starter](https://www.drupal.org/project/webapi_starter): a documented JSON:API from
+  `/api`, with OAuth 2.0 and Swagger UI.
+- [Webships API Starter](https://www.drupal.org/project/webships_starter): a web apps gallery with
+  organizations, served through the same documented API.
 
 ## Create a project
 
@@ -38,10 +42,11 @@ ddev launch
 Or install from the command line, with the Webship Starter site template:
 
 ```shell
-ddev drush si -y webship --account-name=webmaster --site-name="My Website" installer_site_template_form.add_ons=webship_starter
+ddev drush site:install ../recipes/webship_starter -y --account-name=webmaster --site-name="My Website"
 ```
 
-Use `website_starter`, `webship_starter` or `webship_portal` as the site template.
+The path is relative to the Drupal root. Use `website_starter`, `webship_starter`, `webship_portal`,
+`webapi_starter` or `webships_starter`.
 
 ## Project layout
 
@@ -52,6 +57,8 @@ Use `website_starter`, `webship_starter` or `webship_portal` as the site templat
 | `recipes/website_starter` | The Website Starter site template |
 | `recipes/webship_starter` | The Webship Starter site template |
 | `recipes/webship_portal` | The Webship Portal site template |
+| `recipes/webapi_starter` | The Drupal Website API Starter site template |
+| `recipes/webships_starter` | The Webships API Starter site template |
 | `vendor/` | Composer dependencies, Drush |
 
 ## What is inside
