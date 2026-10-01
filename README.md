@@ -30,7 +30,7 @@ mkdir -p ~/workspace/projects/my-website
 cd ~/workspace/projects/my-website
 ddev config --project-type=drupal11 --docroot=web --php-version=8.4
 ddev start
-ddev composer create-project drupal/website:^1.0@alpha
+ddev composer create-project drupal/website:~1.0
 ```
 
 ## Install the site
@@ -49,6 +49,22 @@ ddev drush site:install ../recipes/webship_starter -y --account-name=webmaster -
 
 The path is relative to the Drupal root. Use `website_starter`, `webship_starter`, `webship_portal`,
 `webapi_starter` or `webships_starter`.
+
+## Drupal 12 (beta)
+
+The template installs the latest Drupal 11 by default. It also allows Drupal 12,
+which needs PHP 8.5. To try it, set `php_version: "8.5"` in `.ddev/config.yaml`
+(a DDEV release with PHP 8.5 is needed), then:
+
+```shell
+ddev restart
+ddev composer require drupal/core-recommended:^12 drupal/search:^1 -W
+```
+
+Contributed modules that don't declare Drupal 12 support yet are allowed by the
+`mglaman/composer-drupal-lenient` plugin (`extra.drupal-lenient.allowed-list`),
+and `webship/patches` adds `^12` to their info files. Search left Drupal core in
+Drupal 12; Webship Portal uses it. Some modules still fail on Drupal 12.
 
 ## Project layout
 
