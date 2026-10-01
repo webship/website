@@ -58,7 +58,8 @@ which needs PHP 8.5. To try it, set `php_version: "8.5"` in `.ddev/config.yaml`
 
 ```shell
 ddev restart
-ddev composer require drupal/core-recommended:^12 drupal/search:^1 -W
+ddev composer require --no-update drupal/core-recommended:^12 drupal/search:^1
+ddev composer update -W
 ```
 
 Contributed modules that don't declare Drupal 12 support yet are allowed by the
