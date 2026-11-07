@@ -8,6 +8,6 @@ database:
   type: mariadb
   version: "10.11"
 composer_version: "2"
-nodejs_version: "20"
+nodejs_version: "24"
 web_environment:
   - DRUSH_OPTIONS_URI=$DDEV_PRIMARY_URL
