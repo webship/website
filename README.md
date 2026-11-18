@@ -21,12 +21,13 @@ templates. The installer lists them:
 
 ## Create a project
 
-Composer runs inside DDEV, so nothing is needed on your machine but DDEV itself.
+Composer runs inside DDEV, so nothing is needed on your machine but DDEV itself:
+DDEV 1.25 or newer, for PHP 8.5 (DDEV 1.24 does not offer it).
 
 ```shell
 mkdir -p ~/workspace/projects/my-website
 cd ~/workspace/projects/my-website
-ddev config --project-type=drupal11 --docroot=web --php-version=8.4
+ddev config --project-type=drupal11 --docroot=web --php-version=8.5
 ddev start
 ddev composer create-project drupal/website:~12.0
 ```
@@ -51,11 +52,9 @@ The path is relative to the Drupal root. Use `website_starter`, `webship_starter
 ## Drupal 12 (beta)
 
 The template installs the latest Drupal 11 by default. It also allows Drupal 12,
-which needs PHP 8.5. To try it, set `php_version: "8.5"` in `.ddev/config.yaml`
-(a DDEV release with PHP 8.5 is needed), then:
+which needs PHP 8.5, the PHP version of the project's DDEV configuration. To try it:
 
 ```shell
-ddev restart
 ddev composer require drupal/core-recommended:^12 drupal/search:^1 -W
 ```
 
